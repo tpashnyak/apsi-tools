@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The APSI Trail: Did She Deliver? — Business with Personal Finance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root{
+    --navy-deep:#0B1B33;
+    --navy:#132A4D;
+    --navy-light:#1D3A66;
+    --gold:#C9A227;
+    --gold-bright:#EACD6E;
+    --cream:#F4EFE3;
+    --muted:#93A6C7;
+    --ink:#0B1B33;
+    --success:#5FA383;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse at 20% -10%, rgba(201,162,39,0.10), transparent 45%),
+      radial-gradient(ellipse at 90% 0%, rgba(201,162,39,0.08), transparent 40%),
+      var(--navy-deep);
+    color:var(--cream);
+    font-family:'Inter', sans-serif;
+    min-height:100vh;
+    padding:0 0 80px 0;
+  }
+
+  /* ---------- HEADER / MAP MASTHEAD ---------- */
+  .masthead{
+    position:relative;
+    padding:56px 24px 40px;
+    text-align:center;
+    border-bottom:1px solid rgba(201,162,39,0.25);
+    overflow:hidden;
+  }
+  .masthead .peaks{
+    position:absolute;
+    bottom:-2px; left:0; right:0;
+    height:70px;
+    opacity:0.35;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    font-size:12px;
+    color:var(--gold-bright);
+    margin-bottom:14px;
+  }
+  h1{
+    font-family:'Playfair Display', serif;
+    font-weight:900;
+    font-size:clamp(28px,5vw,48px);
+    margin:0 0 12px;
+    color:var(--cream);
+    letter-spacing:0.01em;
+  }
+  h1 em{
+    font-style:italic;
+    color:var(--gold-bright);
+  }
+  .sub{
+    max-width:620px;
+    margin:0 auto;
+    font-size:15.5px;
+    line-height:1.6;
+    color:var(--muted);
+  }
+  .sub strong{color:var(--cream);}
+
+
+  /* ---------- PROGRESS COMPASS ---------- */
+  .compass-bar{
+    max-width:720px;
+    margin:32px auto 0;
+    padding:0 24px;
+  }
+  .compass-track{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(201,162,39,0.3);
+    border-radius:999px;
+    height:14px;
+    overflow:hidden;
+    position:relative;
+  }
+  .compass-fill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg, var(--gold) 0%, var(--gold-bright) 100%);
+    transition:width 0.5s ease;
+    border-radius:999px;
+  }
+  .compass-label{
+    text-align:center;
+    margin-top:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--gold-bright);
+    letter-spacing:0.04em;
+  }
+
+  /* ---------- TRAIL ---------- */
+  .trail{
+    max-width:900px;
+    margin:56px auto 0;
+    padding:0 24px;
+    position:relative;
+  }
+  .trail::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:0;
+    bottom:60px;
+    width:2px;
+    background-image:linear-gradient(var(--gold) 55%, transparent 0%);
+    background-size:2px 16px;
+    background-repeat:repeat-y;
+    transform:translateX(-50%);
+    opacity:0.55;
+  }
+  .stop{
+    position:relative;
+    display:flex;
+    margin-bottom:38px;
+    width:100%;
+  }
+  .stop:nth-child(odd){ justify-content:flex-start; }
+  .stop:nth-child(even){ justify-content:flex-end; }
+
+  .stop-card{
+    width:calc(50% - 46px);
+    background:linear-gradient(160deg, var(--navy) 0%, var(--navy-light) 100%);
+    border:1px solid rgba(201,162,39,0.28);
+    border-radius:14px;
+    padding:22px 22px 20px;
+    position:relative;
+    box-shadow:0 10px 30px -12px rgba(0,0,0,0.5);
+    transition:border-color 0.25s ease, transform 0.2s ease;
+  }
+  .stop-card.verified{
+    border-color:var(--gold);
+    box-shadow:0 10px 30px -10px rgba(201,162,39,0.25);
+  }
+
+  .flag{
+    position:absolute;
+    top:18px;
+    width:44px; height:44px;
+    border-radius:50%;
+    background:var(--navy-deep);
+    border:2px solid var(--gold);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;
+    font-size:14px;
+    color:var(--gold-bright);
+    z-index:2;
+  }
+  .stop:nth-child(odd) .flag{ right:-64px; }
+  .stop:nth-child(even) .flag{ left:-64px; }
+
+  .stop-kicker{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:6px;
+  }
+  .stop-title{
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size:19px;
+    line-height:1.3;
+    margin:0 0 8px;
+    color:var(--cream);
+  }
+  .stop-desc{
+    font-size:13.5px;
+    line-height:1.55;
+    color:var(--muted);
+    margin:0 0 14px;
+  }
+
+  .status-row{
+    display:flex;
+    gap:8px;
+    margin-bottom:16px;
+    flex-wrap:wrap;
+  }
+  .status-btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.02em;
+    padding:8px 12px;
+    border-radius:999px;
+    border:1px dashed rgba(147,166,199,0.4);
+    background:transparent;
+    color:var(--muted);
+    cursor:pointer;
+    transition:all 0.2s ease;
+    flex:1;
+    min-width:100px;
+    text-align:center;
+  }
+  .status-btn:hover{ border-color:rgba(201,162,39,0.5); color:var(--cream); }
+  .status-btn[data-status="confirmed"].active{
+    border:1px solid var(--gold);
+    background:radial-gradient(circle at 30% 30%, var(--gold-bright), var(--gold));
+    color:var(--navy-deep);
+    font-weight:600;
+  }
+  .status-btn[data-status="wip"].active{
+    border:1px solid #d9a757;
+    background:rgba(217,167,87,0.22);
+    color:#f0c98a;
+    font-weight:600;
+  }
+  .status-btn[data-status="unconfirmed"].active{
+    border:1px solid #8a6a7a;
+    background:rgba(217,119,87,0.14);
+    color:#e0a08a;
+    font-weight:600;
+  }
+  .stop-card.wip{
+    border-color:#d9a757;
+    box-shadow:0 10px 30px -10px rgba(217,167,87,0.2);
+  }
+  .rating-row{
+    display:flex;
+    gap:5px;
+    margin-bottom:4px;
+    flex-wrap:wrap;
+  }
+  .rating-btn{
+    flex:1;
+    min-width:26px;
+    height:36px;
+    border-radius:8px;
+    border:1px dashed rgba(147,166,199,0.4);
+    background:transparent;
+    color:var(--muted);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    cursor:pointer;
+    transition:all 0.2s ease;
+  }
+  .rating-btn:hover{ border-color:rgba(201,162,39,0.5); color:var(--cream); }
+  .rating-btn.active{
+    border:1px solid var(--gold);
+    background:radial-gradient(circle at 30% 30%, var(--gold-bright), var(--gold));
+    color:var(--navy-deep);
+    font-weight:700;
+  }
+  .rating-scale-labels{
+    display:flex;
+    justify-content:space-between;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    color:var(--muted);
+    margin-bottom:16px;
+  }
+
+  textarea{
+    width:100%;
+    min-height:64px;
+    background:rgba(0,0,0,0.2);
+    border:1px solid rgba(147,166,199,0.3);
+    border-radius:8px;
+    color:var(--cream);
+    font-family:'Inter', sans-serif;
+    font-size:13px;
+    line-height:1.5;
+    padding:10px 12px;
+    resize:vertical;
+    transition:border-color 0.2s ease;
+  }
+  textarea:focus{
+    outline:none;
+    border-color:var(--gold);
+  }
+  textarea::placeholder{ color:rgba(147,166,199,0.55); font-style:italic; }
+  .field-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:12px 0 5px;
+  }
+  .field-label:first-of-type{ margin-top:0; }
+  .comment-field textarea{ border-color:rgba(217,119,87,0.35); }
+  .comment-field textarea:focus{ border-color:#d97757; }
+
+  /* ---------- FINISH LINE ---------- */
+  .finish{
+    max-width:640px;
+    margin:20px auto 0;
+    padding:32px 28px;
+    text-align:center;
+    background:linear-gradient(160deg, var(--navy) 0%, var(--navy-light) 100%);
+    border:1px solid rgba(201,162,39,0.35);
+    border-radius:16px;
+  }
+  .finish h2{
+    font-family:'Playfair Display', serif;
+    font-size:24px;
+    margin:0 0 10px;
+    color:var(--gold-bright);
+  }
+  .scoreboard{
+    display:inline-block;
+    margin:0 0 22px;
+    padding:16px 28px;
+    border:1px solid rgba(201,162,39,0.4);
+    border-radius:12px;
+    background:rgba(0,0,0,0.18);
+  }
+  .scoreboard .score-num{
+    font-family:'Playfair Display', serif;
+    font-weight:900;
+    font-size:40px;
+    color:var(--gold-bright);
+    line-height:1;
+  }
+  .scoreboard .score-num span{
+    font-size:18px;
+    color:var(--muted);
+    font-weight:600;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .scoreboard-row{
+    display:flex;
+    gap:28px;
+    justify-content:center;
+  }
+  .score-block{ text-align:center; }
+  .score-sublabel{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-top:4px;
+  }
+  .scoreboard .score-tagline{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:0.03em;
+    color:var(--muted);
+    margin-top:14px;
+  }
+  .finish p{
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.6;
+    margin:0 0 20px;
+  }
+  .finish-note{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px !important;
+    color:rgba(147,166,199,0.75) !important;
+    margin:14px 0 0 !important;
+  }
+  .btn-row{
+    display:flex;
+    gap:12px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+  button.action{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.04em;
+    padding:12px 22px;
+    border-radius:8px;
+    border:1px solid var(--gold);
+    background:transparent;
+    color:var(--gold-bright);
+    cursor:pointer;
+    transition:all 0.2s ease;
+  }
+  button.action.primary{
+    background:linear-gradient(90deg, var(--gold) 0%, var(--gold-bright) 100%);
+    color:var(--navy-deep);
+    font-weight:600;
+    border:none;
+  }
+  button.action:hover{ transform:translateY(-1px); filter:brightness(1.08); }
+  button.action.danger-armed{
+    border-color:#d97757;
+    color:#f0a98a;
+  }
+
+  footer{
+    text-align:center;
+    margin-top:28px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color:rgba(147,166,199,0.6);
+    letter-spacing:0.05em;
+  }
+
+  .modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.75);
+    z-index:1000;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .modal-overlay.open{ display:flex; }
+  .modal-box{
+    background:var(--navy);
+    border:1px solid rgba(201,162,39,0.4);
+    border-radius:14px;
+    padding:20px;
+    max-width:min(90vw, 640px);
+    max-height:90vh;
+    overflow-y:auto;
+    text-align:center;
+  }
+  .modal-box img{
+    max-width:100%;
+    border-radius:8px;
+    display:block;
+    margin:0 auto 16px;
+  }
+  .modal-instructions{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--gold-bright);
+    line-height:1.6;
+    margin:0 0 16px;
+  }
+  .modal-actions{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+
+  @media (max-width:760px){
+    .trail::before{ left:24px; }
+    .stop{ justify-content:flex-start !important; }
+    .stop-card{ width:calc(100% - 60px); margin-left:56px; }
+    .stop:nth-child(odd) .flag,
+    .stop:nth-child(even) .flag{ left:0; right:auto; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="masthead">
+    <svg class="peaks" viewBox="0 0 1200 100" preserveAspectRatio="none">
+      <polygon points="0,100 150,30 300,100" fill="#C9A227"/>
+      <polygon points="200,100 400,10 600,100" fill="#C9A227" opacity="0.7"/>
+      <polygon points="500,100 700,40 900,100" fill="#C9A227"/>
+      <polygon points="800,100 1000,15 1200,100" fill="#C9A227" opacity="0.7"/>
+    </svg>
+    <div class="eyebrow">Field Verification Document · Business with Personal Finance APSI</div>
+    <h1>The APSI Trail<br><em>Did She Deliver?</em></h1>
+    <p class="sub">Twelve checkpoints. One facilitator. Zero excuses. Every stop below is a promise the <strong>College Board rubric</strong> made on her behalf — your job, brave traveler, is to confirm she actually delivered, leave one fact as trail evidence, and flag anything you wish the trail had covered better.</p>
+  </div>
+
+  <div class="compass-bar">
+    <div class="compass-track"><div class="compass-fill" id="fill"></div></div>
+    <div class="compass-label" id="progressLabel">0 of 12 checkpoints marked</div>
+  </div>
+
+  <div class="trail" id="trail"></div>
+
+  <div class="finish">
+    <h2>🏁 You've reached base camp.</h2>
+    <div class="scoreboard">
+      <div class="scoreboard-row">
+        <div class="score-block">
+          <div class="score-num"><span id="finalScore">0</span><span> / 11</span></div>
+          <div class="score-sublabel">Trail Score</div>
+        </div>
+        <div class="score-block">
+          <div class="score-num"><span id="recommendScoreEl">—</span><span> / 10</span></div>
+          <div class="score-sublabel">Would Recommend</div>
+        </div>
+      </div>
+      <div class="score-tagline" id="scoreTagline">Mark your checkpoints above to see her score</div>
+    </div>
+    <p>If she earned every stamp, she may have earned an invitation back next summer — thank you! If not, thank you for your feedback and suggestions so she can grow!</p>
+    <p>Two ways to hand in your trail: submit straight through, or save it as an image if forms aren't your thing (or aren't accessible where you are) — either way it gets to her. We'd suggest saving your image first, just in case the internet gremlins aren't cooperating today. Again, thank you!</p>
+    <div class="btn-row">
+      <button class="action primary" id="submitBtn">Submit to Google Forms (Anonymously, No Detective Work Possible)</button>
+      <button class="action" id="exportBtn">Save as Image</button>
+      <button class="action" id="resetBtn">Reset Trail</button>
+    </div>
+    <p class="finish-note">No Google account or form access needed for "Save as Image" — it renders right here in your browser and downloads straight to your device.</p>
+    <p class="finish-note">If the Google Forms submission doesn't go through, ask your facilitator for the direct link to submit your saved image anonymously instead.</p>
+    <p id="submitStatus" style="font-size:12px; color:var(--muted); margin:14px 0 0; font-family:'IBM Plex Mono', monospace;"></p>
+  </div>
+
+  <footer>Your responses are only ever visible to you and, once you submit, to the workshop facilitator — never to other participants.</footer>
+
+  <div class="modal-overlay" id="imageModal">
+    <div class="modal-box">
+      <img id="modalImage" src="" alt="Your trail, rendered as an image">
+      <p class="modal-instructions">Press and hold (on phone/tablet) or right-click (on desktop) the image above and choose "Save Image" — this works even if your device or browser blocked an automatic download.</p>
+      <div class="modal-actions">
+        <button class="action primary" id="modalDownloadBtn">Try Automatic Download</button>
+        <button class="action" id="modalCloseBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+const stops = [
+  {
+    kicker: "Checkpoint 1 · Map Reading",
+    title: "CED Sections ↔ Curricular Requirements",
+    desc: "Walked the group through the Course & Exam Description section by section, tying each part back to the actual curricular requirements."
+  },
+  {
+    kicker: "Checkpoint 2 · Trail Planning",
+    title: "Yearlong / Semester Instructional Plan",
+    desc: "Modeled how to build a full-year (or semester) plan that covers every unit, topic, and skill in the CED — not just vibes and hope."
+  },
+  {
+    kicker: "Checkpoint 3 · Basecamp Culture",
+    title: "A Supportive AP Classroom",
+    desc: "Facilitated real discussion on building a classroom that works for a wide range of students, not just the ones who already love business class."
+  },
+  {
+    kicker: "Checkpoint 4 · Open Trailhead",
+    title: "Encouraging All Students to Take AP",
+    desc: "Discussed how educators can encourage students to participate in AP, including underrepresented students who might not see themselves as 'AP kids' yet."
+  },
+  {
+    kicker: "Checkpoint 5 · Gear Check",
+    title: "Instructional Strategies & Tools",
+    desc: "Identified and explained strategies and tools teachers can actually put into lesson plans to teach the content and skills in the CED."
+  },
+  {
+    kicker: "Checkpoint 6 · Navigation Tools",
+    title: "AP Classroom for Skills & Practices",
+    desc: "Showed how AP Classroom can reinforce topic and skill/practice connections — and be built directly into lesson plans."
+  },
+  {
+    kicker: "Checkpoint 7 · Reading the Terrain",
+    title: "IPR Data & the Progress Dashboard",
+    desc: "Interpreted the Instructional Planning Report and AP Classroom data to spot student strengths, weaknesses, and gaps worth addressing."
+  },
+  {
+    kicker: "Checkpoint 8 · Morale",
+    title: "Engaging Instruction & Activities",
+    desc: "Delivered activities aimed at building both course knowledge and instructional best practice — engagement included, at no extra charge."
+  },
+  {
+    kicker: "Checkpoint 9 · Official Provisions",
+    title: "College Board Materials, Properly Used",
+    desc: "Used the CED, project implementation guides, and student assessment samples as the backbone of the week."
+  },
+  {
+    kicker: "Checkpoint 10 · Trail Markers",
+    title: "Meaningful, Actionable Feedback",
+    desc: "Gave participants feedback on understanding, planning, and teaching the course they could actually use in their classroom."
+  },
+  {
+    kicker: "Checkpoint 11 · The Summit Push",
+    title: "Preparing Students to Earn College Credit",
+    desc: "Went over exam prep tactics to prepare participants for helping students earn an AP score that may convert to college credit or at least recognition."
+  },
+  {
+    kicker: "Final Checkpoint",
+    title: "How likely would you be to recommend this APSI workshop to a colleague?",
+    desc: "The classic exit-survey question. Be honest — she can take it.",
+    type: "rating"
+  }
+];
+
+const trail = document.getElementById('trail');
+const CREDIT = { confirmed: 1, wip: 0.5, unconfirmed: 0 };
+const STATUS_LABEL = { confirmed: "Confirmed", wip: "Work in Progress", unconfirmed: "Unconfirmed" };
+const stopStatus = stops.map(() => 'unconfirmed');
+let recommendScore = null;
+
+stops.forEach((s, i) => {
+  const stop = document.createElement('div');
+  stop.className = 'stop';
+
+  const interaction = s.type === 'rating'
+    ? `<div class="rating-row" id="ratingRow-${i}">
+        ${Array.from({length: 10}, (_, n) => n + 1).map(n =>
+          `<button class="rating-btn" data-value="${n}" type="button">${n}</button>`
+        ).join('')}
+      </div>
+      <div class="rating-scale-labels"><span>Not likely</span><span>Very likely</span></div>`
+    : `<div class="status-row" id="statusRow-${i}">
+        <button class="status-btn" data-status="confirmed" type="button">Confirmed</button>
+        <button class="status-btn" data-status="wip" type="button">Work in Progress</button>
+        <button class="status-btn active" data-status="unconfirmed" type="button">Unconfirmed</button>
+      </div>`;
+
+  const factLabel = s.type === 'rating' ? "Why this rating?" : "One fact from this stop";
+  const factPlaceholder = s.type === 'rating'
+    ? "What made you land on this number..."
+    : "One fact I'm taking with me from this part of the workshop...";
+
+  stop.innerHTML = `
+    <div class="flag">${i + 1}</div>
+    <div class="stop-card" id="card-${i}">
+      <div class="stop-kicker">${s.kicker}</div>
+      <div class="stop-title">${s.title}</div>
+      <div class="stop-desc">${s.desc}</div>
+      ${interaction}
+      <div class="field-label">${factLabel}</div>
+      <textarea id="fact-${i}" placeholder="${factPlaceholder}"></textarea>
+      <div class="field-label">Suggestions or gaps (optional)</div>
+      <div class="comment-field">
+        <textarea id="comment-${i}" placeholder="Anything you wish had been covered differently or in more depth here..."></textarea>
+      </div>
+    </div>
+  `;
+  trail.appendChild(stop);
+});
+
+const fill = document.getElementById('fill');
+const progressLabel = document.getElementById('progressLabel');
+const finalScoreEl = document.getElementById('finalScore');
+const recommendScoreEl = document.getElementById('recommendScoreEl');
+const scoreTagline = document.getElementById('scoreTagline');
+const checkpointIndexes = stops.map((s, i) => i).filter(i => stops[i].type !== 'rating');
+const maxCheckpoints = checkpointIndexes.length;
+
+function currentScore(){
+  return checkpointIndexes.reduce((sum, i) => sum + CREDIT[stopStatus[i]], 0);
+}
+
+function taglineFor(score){
+  const pct = score / maxCheckpoints;
+  if (pct >= 0.75) return "Strong trail. A few spots still drying their ink.";
+  if (pct >= 0.4) return "Progress made — worth another look before final word.";
+  if (pct > 0) return "Early days on the trail. Plenty left to confirm.";
+  return "No checkpoints confirmed yet — get stamping!";
+}
+
+function updateProgress(){
+  const markedCount = checkpointIndexes.filter(i => stopStatus[i] !== 'unconfirmed').length + (recommendScore === null ? 0 : 1);
+  const score = currentScore();
+  fill.style.width = (score / maxCheckpoints * 100) + '%';
+  progressLabel.textContent = `${markedCount} of ${stops.length} checkpoints marked`;
+  finalScoreEl.textContent = score.toFixed(1).replace(/\.0$/, '');
+  recommendScoreEl.textContent = recommendScore === null ? "—" : recommendScore;
+  scoreTagline.textContent = taglineFor(score);
+}
+
+stops.forEach((s, i) => {
+  if (s.type === 'rating') return;
+  const row = document.getElementById(`statusRow-${i}`);
+  const card = document.getElementById(`card-${i}`);
+  row.querySelectorAll('.status-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const status = btn.dataset.status;
+      stopStatus[i] = status;
+      row.querySelectorAll('.status-btn').forEach(b => b.classList.toggle('active', b === btn));
+      card.classList.toggle('verified', status === 'confirmed');
+      card.classList.toggle('wip', status === 'wip');
+      updateProgress();
+    });
+  });
+});
+
+stops.forEach((s, i) => {
+  if (s.type !== 'rating') return;
+  const row = document.getElementById(`ratingRow-${i}`);
+  row.querySelectorAll('.rating-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      recommendScore = Number(btn.dataset.value);
+      row.querySelectorAll('.rating-btn').forEach(b => b.classList.toggle('active', b === btn));
+      updateProgress();
+    });
+  });
+});
+
+updateProgress();
+
+// Save as Image — shows a modal preview so this still works even when
+// embedded in a sandboxed iframe (e.g. Google Sites) that blocks
+// automatic file downloads.
+let currentImageUrl = null;
+
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const btn = document.getElementById('exportBtn');
+  btn.textContent = 'Rendering...';
+  html2canvas(document.body, {backgroundColor: '#0B1B33', scale: 2}).then(canvas => {
+    canvas.toBlob(blob => {
+      if (currentImageUrl) URL.revokeObjectURL(currentImageUrl);
+      currentImageUrl = URL.createObjectURL(blob);
+      document.getElementById('modalImage').src = currentImageUrl;
+      document.getElementById('imageModal').classList.add('open');
+      btn.textContent = 'Save as Image';
+    });
+  });
+});
+
+document.getElementById('modalDownloadBtn').addEventListener('click', () => {
+  if (!currentImageUrl) return;
+  try {
+    const a = document.createElement('a');
+    a.href = currentImageUrl;
+    a.download = 'apsi-trail-did-she-deliver.png';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } catch (e) {
+    // If this is blocked (sandboxed iframe), the modal image is still
+    // right there for a manual right-click / press-and-hold save.
+  }
+});
+
+document.getElementById('modalCloseBtn').addEventListener('click', () => {
+  document.getElementById('imageModal').classList.remove('open');
+});
+
+// ============================================================
+// GOOGLE FORM CONNECTION
+// Fill this in after you build your Google Form.
+// See the setup guide for exactly where to find it.
+// Leave GOOGLE_FORM_ACTION_URL blank ("") to disable submission
+// and just use Export PNG instead.
+// ============================================================
+const GOOGLE_FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfKOJlfHvxcx5b0i8GECPt4jtBE9JOBO1tuQO3yyrJfxyHB3w/formResponse"; // e.g. "https://docs.google.com/forms/d/e/1FAIpQLS.../formResponse"
+const ENTRY_SUMMARY = "entry.2013385364";          // e.g. "entry.987654321"  (single paragraph field)
+
+document.getElementById('submitBtn').addEventListener('click', () => {
+  const status = document.getElementById('submitStatus');
+
+  if (!GOOGLE_FORM_ACTION_URL || !ENTRY_SUMMARY) {
+    status.textContent = "Submission isn't connected yet — use Export as PNG instead, or ask Claude to help wire up the Google Form.";
+    status.style.color = "#f0a98a";
+    return;
+  }
+
+  const lines = stops.map((s, i) => {
+    const status = s.type === 'rating'
+      ? (recommendScore === null ? "Not rated" : `Rated ${recommendScore} / 10`)
+      : STATUS_LABEL[stopStatus[i]];
+    const fact = document.getElementById(`fact-${i}`).value.trim() || "(no fact entered)";
+    const comment = document.getElementById(`comment-${i}`).value.trim() || "(no comment)";
+    return `Checkpoint ${i + 1} — ${s.title}\nStatus: ${status}\nFact: ${fact}\nSuggestion/gap: ${comment}\n`;
+  });
+  const scoreLine = `Trail Score: ${currentScore().toFixed(1).replace(/\.0$/, '')} / ${maxCheckpoints}\nWould Recommend: ${recommendScore === null ? "not rated" : recommendScore + " / 10"}\n\n`;
+  const summary = scoreLine + lines.join('\n');
+
+  const formData = new FormData();
+  formData.append(ENTRY_SUMMARY, summary);
+
+  fetch(GOOGLE_FORM_ACTION_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    body: formData
+  }).then(() => {
+    status.textContent = "Submitted — thank you! Your responses are private to the facilitator.";
+    status.style.color = "var(--gold-bright)";
+  }).catch(() => {
+    status.textContent = "Something went wrong sending this — try again, or export the PNG instead.";
+    status.style.color = "#f0a98a";
+  });
+});
+
+// Reset with arm-to-confirm (no native confirm() in sandboxed iframes)
+const resetBtn = document.getElementById('resetBtn');
+let armed = false;
+let armTimeout;
+resetBtn.addEventListener('click', () => {
+  if(!armed){
+    armed = true;
+    resetBtn.textContent = 'Click again to reset';
+    resetBtn.classList.add('danger-armed');
+    armTimeout = setTimeout(() => {
+      armed = false;
+      resetBtn.textContent = 'Reset Trail';
+      resetBtn.classList.remove('danger-armed');
+    }, 3000);
+  } else {
+    clearTimeout(armTimeout);
+    stops.forEach((s, i) => {
+      if (s.type === 'rating') {
+        const row = document.getElementById(`ratingRow-${i}`);
+        row.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('active'));
+      } else {
+        stopStatus[i] = 'unconfirmed';
+        const row = document.getElementById(`statusRow-${i}`);
+        row.querySelectorAll('.status-btn').forEach(b => b.classList.toggle('active', b.dataset.status === 'unconfirmed'));
+        document.getElementById(`card-${i}`).classList.remove('verified', 'wip');
+      }
+      document.getElementById(`fact-${i}`).value = '';
+      document.getElementById(`comment-${i}`).value = '';
+    });
+    recommendScore = null;
+    document.getElementById('submitStatus').textContent = '';
+    updateProgress();
+    armed = false;
+    resetBtn.textContent = 'Reset Trail';
+    resetBtn.classList.remove('danger-armed');
+  }
+});
+</script>
+
+</body>
+</html>
